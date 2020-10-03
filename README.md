@@ -29,6 +29,7 @@ A app estará disponível no endereço http://localhost:8080
   - Um clique no botão acima envia o usuário a página inicial, resetando o humor.
   - Os nomes das actions são guardadas em constantes para facilitar a reutilização
   - O efeito de mudança de humor foi simulado com transições fade out vs fade in.
+  - Existe um preload de imagens para melhorar a fluidez do app.
 
 
 ## Arquivos principais
