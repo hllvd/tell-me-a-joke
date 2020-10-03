@@ -1,12 +1,42 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+  <router-link to="/leia-me-uma-piada" tag="div" id="app" v-bind:class="moodClass">
     <router-view/>
-  </div>
+    </router-link>
 </template>
+
+<script>
+import { JOKE_LENGTH} from '@/store/app.store'
+export default {
+  name: 'App',
+  methods: {},
+  data(){
+
+    return{imgs:[{url:"./assets/1.jpg"}]}
+  },
+  computed:{
+    //retorna humor atual
+    moodClass:function(){
+      return "mood-"+this.$store.getters.getMood
+    }
+
+  },
+  mounted:function(){
+      // preload images ( para não "piscar" ao mudar a imagem)
+      let img = []
+      for(let i=1; i<JOKE_LENGTH;i++){
+        img[i] = new Image();
+        img[i].src=require("./assets/"+i+".jpg")
+        let that = this
+        img.onload = () => {
+          console.log('img loaded');
+          that.imgs.push(img[i])
+        }
+
+      }
+  }
+}
+</script>
+
 
 <style>
 #app {
@@ -15,18 +45,15 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
 
-#nav {
-  padding: 30px;
+  position: absolute;
+    height: 100%;
+    width: 100%;
 }
+body{
+  margin:0px
+}
+#app{transition: background 1s linear;}
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

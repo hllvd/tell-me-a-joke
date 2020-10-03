@@ -1,18 +1,20 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import { ACTION_APP_RESET_MOOD} from '@/store/app.store'
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+
+  },
+  mounted:function(){
+    //Reseta os estado de humor
+    this.$store.dispatch(ACTION_APP_RESET_MOOD)
   }
 }
+
 </script>
