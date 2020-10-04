@@ -1,6 +1,8 @@
 import { mount, shallowMount, createLocalVue  } from '@vue/test-utils'
 import Modal from '@/components/Modal.vue'
 import Vuex from 'vuex'
+import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
 import flushPromises from 'flush-promises'
 import { JOKE_LENGTH, ACTION_APP_IMPROVE_MOOD, ACTION_APP_LOAD_JOKES} from '@/store/app.store'
 import AppStore from '@/store/app.store'
@@ -35,19 +37,15 @@ describe("Modal", () => {
     expect(wrapper.find('.btn-orange').text()).toContain('próxima')
   })
 
-  it('fetches async when a button is clicked', async () => {
-    AppStore['state']['level'] = JOKE_LENGTH - 1
-    const wrapper = shallowMount(Modal, {
-      store, localVue,router
-    })
-    let a = ""
-    wrapper.find('.btn-orange').trigger('click')
-    a = wrapper.text()
-    await flushPromises();
-    console.log(a)
-
-
-
+  it('Testando axios', async () => {
+	var mock = new MockAdapter(axios)
+	mock.onGet("https://geek-jokes.sameerkumar.website/api?format=json").reply(200, {joke:'resultado piada'});
+	axios
+		.get('https://geek-jokes.sameerkumar.website/api?format=json')
+		.then(function(response){
+			expect(response.data).toEqual({joke:'resultado piada'})
+		}).catch(e => {console.log(e)});
+	
   })
 
 
