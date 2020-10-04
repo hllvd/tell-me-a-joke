@@ -3,7 +3,6 @@ import Modal from '@/components/Modal.vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import flushPromises from 'flush-promises'
 import { JOKE_LENGTH, ACTION_APP_IMPROVE_MOOD, ACTION_APP_LOAD_JOKES} from '@/store/app.store'
 import AppStore from '@/store/app.store'
 import VueRouter from "vue-router"
@@ -45,10 +44,7 @@ describe("Modal", () => {
 		.then(function(response){
 			expect(response.data).toEqual({joke:'resultado piada'})
 		}).catch(e => {console.log(e)});
-	
   })
-
-
 
 
 })

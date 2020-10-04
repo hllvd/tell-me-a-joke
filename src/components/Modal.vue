@@ -18,14 +18,16 @@
           class="modal-body"
           id="modalDescription"
           >
-            <div class="texto">
+            <div class="texto"  @mouseup="isAllTextSelected()" v-if="!isLastJoke()">
                   {{Joke}}
             </div>
+            <img   src="meme/teste.gif" rel="preload" v-if="isLastJoke()" class="theend">
         </section>
         <footer class="modal-footer">
           <slot name="footer">
-            <button type="button" v-if="switchButtons()" @click="nextJoke()" class="btn-orange">Muito boa, próxima</button>
-            <router-link to="/" v-if="!switchButtons()" tag="button" class="btn-orange secundary">Fechar piadas</router-link>
+            <button type="button" v-if="isMobile() && !isLastJoke()" @click="nextJoke()" class="btn-orange">Muito boa, próxima</button>
+            <pre v-if="!isLastJoke() && !isMobile()"><strong>Esther</strong> só consegue ler textos selecionados</pre>
+            <router-link to="/" v-if="isLastJoke()" tag="button" class="btn-orange secundary">Fechar piadas</router-link>
           </slot>
         </footer>
       </div>
@@ -41,21 +43,56 @@ export default {
 
   methods: {
     /*
+    * Verifica se a seleção atual é a mesma que o texto completo
+    */
+    isAllTextSelected:function(){
+        if(  window.getSelection().toString().replace(/\s/g, '') == this.Joke.toString().replace(/\s/g, '')  ){
+          window.getSelection().removeAllRanges();
+          this.nextJoke();
+        }
+    },
+
+    /**
+    * Verifica se é um celular
+    * @return Boolean
+    */
+    isMobile : function() {
+        if( screen.width <= 600 ) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    },
+
+    /*
      * set next humor level
      * @return null
      */
     nextJoke:function(){
       this.improveMoodLevel()
     },
+
     /*
-     * switch buttons
+     * Verica se é a última piada
      * @return Boolean
      */
-    switchButtons:function(){
+    isLastJoke:function(){
+      if (this.MoodLevel>=JOKE_LENGTH ){
+        return true;
+      }
+    },
+
+    /*
+     * Seguir o fluxo
+     * @return Boolean
+     */
+    nextBtn:function(){
       if (this.MoodLevel<JOKE_LENGTH ){
         return true;
       }
     },
+
     /*
     * Melhora o humor
     */
@@ -104,7 +141,7 @@ export default {
 
   computed: {
     /*
-    * Get currenty mood level
+    * Recupera humor atual
     * @return integer
     */
     MoodLevel:function(){
@@ -216,7 +253,7 @@ export default {
      height: 400px;
    }
    .text{font-size: 23px;}
-
+   .theend{zoom:70%}
    .modal-body{
      position: relative;
       width: 354px;
