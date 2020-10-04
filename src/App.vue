@@ -5,14 +5,10 @@
 </template>
 
 <script>
-import { JOKE_LENGTH} from '@/store/app.store'
+
 export default {
   name: 'App',
   methods: {},
-  data(){
-
-    return{imgs:[{url:"./assets/1.jpg"}]}
-  },
   computed:{
     //retorna humor atual
     moodClass:function(){
@@ -20,20 +16,7 @@ export default {
     }
 
   },
-  mounted:function(){
-      // preload images ( para não "piscar" ao mudar a imagem)
-      let img = []
-      for(let i=1; i<JOKE_LENGTH;i++){
-        img[i] = new Image();
-        img[i].src=require("./assets/"+i+".jpg")
-        let that = this
-        img.onload = () => {
-          console.log('img loaded');
-          that.imgs.push(img[i])
-        }
 
-      }
-  }
 }
 </script>
 
@@ -54,6 +37,7 @@ body{
   margin:0px
 }
 #app{transition: background 1s linear;}
+
 
 
 </style>

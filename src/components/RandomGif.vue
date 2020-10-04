@@ -43,4 +43,12 @@ img.gif{
   left: -37px;
   opacity: 1;
   }
+
+
+  @media (max-width: 600px)
+  {
+img.gif{
+  top: 10px;
+  zoom: 32%;
+}}
 </style>

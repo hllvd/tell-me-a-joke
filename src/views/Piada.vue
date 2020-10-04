@@ -11,7 +11,6 @@ import RandomGif from '@/components/RandomGif.vue'
 import Modal from '@/components/Modal.vue'
 
 export default {
-
   components: {
     RandomGif,
     Modal
@@ -21,14 +20,15 @@ export default {
         isModalVisible: false,
       };
     },
-    methods: {
-      showModal() {
-        this.isModalVisible = true;
-      },
-      closeModal() {
-        this.isModalVisible = false;
-      }
+    
+  methods: {
+    showModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
     }
+  }
 }
 </script>
 <style scoped>

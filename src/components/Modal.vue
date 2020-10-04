@@ -18,12 +18,9 @@
           class="modal-body"
           id="modalDescription"
           >
-
             <div class="texto">
                   {{Joke}}
             </div>
-
-
         </section>
         <footer class="modal-footer">
           <slot name="footer">
@@ -36,80 +33,96 @@
   </transition>
 </template>
 <script>
-import { JOKE_LENGTH, ACTION_APP_IMPROVE_MOOD, ACTION_APP_LOAD_JOKES} from '@/store/app.store'
+import { JOKE_LENGTH, ACTION_APP_IMPROVE_MOOD, ACTION_APP_LOAD_JOKES, ACTION_APP_LOAD_DEFAULT_JOKES} from '@/store/app.store'
 import axios from 'axios'
 
 export default {
   name: 'modal',
 
   methods: {
-    /**
-    * set next humor level
-    * @return null
-    */
+    /*
+     * set next humor level
+     * @return null
+     */
     nextJoke:function(){
       this.improveMoodLevel()
     },
-    /**
-    * switch buttons
-    * @return Boolean
-    */
+    /*
+     * switch buttons
+     * @return Boolean
+     */
     switchButtons:function(){
       if (this.MoodLevel<JOKE_LENGTH ){
         return true;
       }
     },
-    /**
-    * set next humor level
+    /*
+    * Melhora o humor
     */
     improveMoodLevel: function(){
       this.$store.dispatch(ACTION_APP_IMPROVE_MOOD)
     },
 
+    /*
+    * Abrir Modal
+    */
     showModal() {
       this.isModalVisible = true;
     },
+
+    /*
+    * Fechar Modal
+    */
     closeModal() {
       this.isModalVisible = false;
     },
+
+    /*
+    * Emite envento para fechar Modal
+    */
     close() {
      this.$emit('close');
     },
-    /**
-    * Load list of jokes from endpoint. It loads all of them in local storage to improve performance
-    * @return Boolean
-    */
+
+    /*
+     * Carrega piadas todas de uma vez e guarda no estado app.store.js/state.jokes
+     * Caso não houve conexão, o action ACTION_APP_LOAD_DEFAULT_JOKES carrega uma piada padrão
+     */
     _loadJokes:function(){
       let urls = new Array(JOKE_LENGTH).fill(('https://geek-jokes.sameerkumar.website/api?format=json'))
       urls.map(url=>{
         axios.get(url).then( result =>{
-          this.$store.dispatch(ACTION_APP_LOAD_JOKES, result.data.joke)
+          this.$store.dispatch(ACTION_APP_LOAD_JOKES,result.data.joke)
         })
         .catch(e => {
+          this.$store.dispatch(ACTION_APP_LOAD_DEFAULT_JOKES)
           console.log(e)
-          return false
         })
-        return true
       })
     }
   },
 
   computed: {
-    /**
+    /*
     * Get currenty mood level
     * @return integer
     */
     MoodLevel:function(){
       return this.$store.getters.getMood
     },
-    /**
-    * Get Joke
+
+    /*
+    * Recupera a piada da vez
+    * @return String
     */
     Joke:function(){
       return this.$store.getters.readNewJoke[this.$store.getters.getMood-1]
     }
   },
 
+  /*
+  * Set init config
+  */
   mounted(){
       this._loadJokes()
       this.nextJoke()
@@ -192,5 +205,28 @@ export default {
     border-radius: 6px;
   }
   .btn-orange:active, .btn-orange:hover, .btn-orange:visited,.btn-orange:focus{border: 1px solid #f29345 !important;}
+
+@media (max-width: 600px)
+{
+  .modal
+   {
+     zoom: 73%;
+     position: absolute;
+     bottom: 11px;
+     height: 400px;
+   }
+   .text{font-size: 23px;}
+
+   .modal-body{
+     position: relative;
+      width: 354px;
+      height: 280px;
+      font-size: 19px;
+      line-height: 1.2em;
+      color: #555;
+      display: table;
+   }
+}
+
 
 </style>
