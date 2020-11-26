@@ -1,6 +1,6 @@
 # Tell me a joke
 ## Sobre o App
-Tell me a Joke foi desenvolvido para fazer a Esther feliz. Ela gosta de escutar piadas em inglês. As do Chuck Norris são as suas preferidas.
+Tell me a Joke foi desenvolvido para fazer a Esther feliz. Ela gosta de escutar piadas em inglês. Esther só consegue entender textos selecionados
 
 #### Instalação
 
